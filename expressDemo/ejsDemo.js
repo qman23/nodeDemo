@@ -14,8 +14,17 @@
  */
 
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
+
+//parse application/x-www-form-urllencoded
+app.use(bodyParser.urlencoded({ extended: false}));
+//parse application/json
+app.use(bodyParser.json());
+
+//设置模板引擎
 app.set("view engine","ejs");
+
 app.get("/",(req,resp)=>{
     let person = {
         name:"赛特",
@@ -27,5 +36,15 @@ app.get("/",(req,resp)=>{
         "hContent":"<h3>内容来自后台11<h3>"
     });
 })
+
+app.get("/login",(req,res)=>{
+    res.render("login",{});
+});
+
+app.post("/doLogin",(req,res)=>{
+    console.log("执行提交");
+    console.log(req.body);
+    res.send("欢迎 "+req.body.username);
+});
 
 app.listen(3000);
